@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Duo Hurdles 🏃 | Multiplayer MCQ Racing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="hurdles.css" />
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+</head>
+<body>
+  <!-- LOBBY -->
+  <div id="h-lobby" class="h-screen active">
+    <div class="orb-bg"><div class="orb o1"></div><div class="orb o2"></div></div>
+    <div class="h-lobby-wrap">
+      <div class="h-title-block">
+        <h1 class="h-title">🏃 DUO<br><span class="h-accent">HURDLES</span></h1>
+        <p class="h-sub">MCQ RACE · STUDY ANY SUBJECT</p>
+      </div>
+      <div class="h-card glass">
+        <div class="h-inputs">
+          <div class="h-slot"><label class="h-label p1-c">🟢 Runner 1</label><input type="text" id="h-p1-name" class="h-input" value="Runner 1" maxlength="12" /></div>
+          <div class="h-vs">VS</div>
+          <div class="h-slot"><label class="h-label p2-c">🟠 Runner 2</label><input type="text" id="h-p2-name" class="h-input" value="Runner 2" maxlength="12" /></div>
+        </div>
+        <div class="h-diff">
+          <h3>Pick Your Topic</h3>
+          <div class="h-topic-grid" id="h-topic-grid"></div>
+        </div>
+        <div class="h-info glass">
+          <p>🏁 <strong>20 hurdles</strong> per race · Every 5th = ⭐ <strong>Super Hurdle</strong> (faster timer, bigger reward)</p>
+          <p>🔥 Build <strong>streaks</strong> for permanent speed boosts · Wrong answers slow you down!</p>
+          <p>🎮 Hold <strong>SPACE</strong> / <strong>D</strong> / <strong>→</strong> to sprint · Keys <strong>1-4</strong> to answer</p>
+        </div>
+        <div class="h-questions-source">
+          <label for="h-questions-file">
+            <span>📄 Load Questions File</span>
+            <span class="qs-hint">.txt in the format described in <code>questions.txt</code></span>
+          </label>
+          <input type="file" id="h-questions-file" accept=".txt,text/plain" />
+          <div class="h-qs-status" id="h-questions-status"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px">
+          <button class="h-tense-btn" id="h-btn-coop" style="flex:1" onclick="Net.start()">🌐 Online MP</button>
+          <button class="h-tense-btn" id="h-btn-solo" style="flex:1">🎯 Solo Practice</button>
+          <span class="net-status" style="font-size:11px;font-weight:600"></span>
+        </div>
+        <button class="h-start-btn" id="h-start-btn">🏁 START RACE</button>
+        <a href="index.html" class="back-link">⚔️ ← Back to Revision Strike</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- RACE -->
+  <div id="h-race" class="h-screen">
+    <div class="race-hud">
+      <div class="race-hud-player">
+        <span class="race-name p1-c" id="race-p1-name">P1</span>
+        <span class="race-hurdle" id="race-p1-hurdle">0/20</span>
+      </div>
+      <div class="race-center">
+        <span class="race-timer" id="race-timer">0:00</span>
+      </div>
+      <div class="race-hud-player">
+        <span class="race-hurdle" id="race-p2-hurdle">0/20</span>
+        <span class="race-name p2-c" id="race-p2-name">P2</span>
+      </div>
+    </div>
+    <canvas id="hurdle-canvas"></canvas>
+    <div class="race-controls">
+      <span>🎮 SPACE / D / → to sprint · 1-4 to answer hurdle</span>
+    </div>
+  </div>
+
+  <!-- HURDLE QUIZ -->
+  <div id="h-quiz-overlay" class="h-overlay hidden">
+    <div class="h-quiz-card glass" id="h-quiz-card">
+      <div class="h-quiz-who" id="h-quiz-who">🏃 Runner 1 — Hurdle!</div>
+      <div class="h-quiz-prompt">
+        <span class="h-tense-tag" id="h-topic-tag">Topic</span>
+        <p class="h-verb" id="h-question">Question text</p>
+      </div>
+      <div class="h-quiz-answers" id="h-quiz-answers"></div>
+      <div class="h-quiz-timer-wrap">
+        <div class="h-quiz-timer" id="h-quiz-timer"></div>
+      </div>
+      <div class="h-quiz-result hidden" id="h-quiz-result">
+        <span id="h-result-icon">✅</span>
+        <span id="h-result-text">Correct!</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINISH -->
+  <div id="h-finish" class="h-screen">
+    <div class="orb-bg"><div class="orb o1"></div><div class="orb o2"></div></div>
+    <div class="h-finish-wrap">
+      <h1 class="h-finish-title" id="h-finish-title">🏆 Winner!</h1>
+      <div class="h-finish-stats" id="h-finish-stats"></div>
+      <div class="h-finish-btns">
+        <button class="h-btn-rematch" id="h-rematch-btn">🔄 Race Again</button>
+        <button class="h-btn-lobby" id="h-lobby-btn">🏠 Lobby</button>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="confetti-canvas-h"></canvas>
+  <script src="questions.js"></script>
+  <script src="srs.js"></script>
+  <script src="audio.js"></script>
+  <script src="net.js"></script>
+  <script src="loader.js"></script>
+  <script src="hurdles.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const fileEl = document.getElementById('h-questions-file');
+      const statusEl = document.getElementById('h-questions-status');
+      if (fileEl && typeof QuestionLoader !== 'undefined') {
+        QuestionLoader.bindFileInput(fileEl, statusEl);
+      }
+    });
+  </script>
+</body>
+</html>

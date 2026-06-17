@@ -1,0 +1,108 @@
+# ═══════════════════════════════════════════════════════════════════
+# REVISION STRIKE — CUSTOM QUESTIONS FILE
+# ═══════════════════════════════════════════════════════════════════
+#
+# Each question is one block of lines:
+#
+#   TOPIC: <topic name>      (sticks until you set a new one — pick any name)
+#   Q: <question text>       (the prompt the player sees)
+#   A: <correct answer>      (the right MCQ option)
+#   D: <distractor>          (a wrong option — add EXACTLY 3 of these)
+#   D: <distractor>
+#   D: <distractor>
+#
+# Rules:
+#   • Lines starting with # are comments — ignored.
+#   • Blank lines are ignored (use them to separate blocks).
+#   • TOPIC sticks: set it once, every following question uses that topic
+#     until you change it. Default topic is "General".
+#   • Every question MUST have exactly 1 A and exactly 3 D lines.
+#   • Add a ! before Q to mark the question as "complex" (3-star difficulty,
+#     longer SRS interval): "!Q: ..."
+#
+# How to load this file in the app:
+#   1. Open Revision Strike in your browser.
+#   2. In the lobby, click "📄 Load Questions File" and pick this .txt.
+#   3. Your questions replace the built-in pool. Your friend who joins
+#      after you (the host) will play with your questions too.
+#
+# Want to use the built-in starter pack instead? Just don't upload anything.
+# ═══════════════════════════════════════════════════════════════════
+
+
+TOPIC: Math
+
+Q: What is 7 × 8?
+A: 56
+D: 54
+D: 64
+D: 49
+
+Q: What is the square root of 144?
+A: 12
+D: 14
+D: 11
+D: 24
+
+!Q: Solve for x: 3x + 7 = 22
+A: 5
+D: 6
+D: 7
+D: 15
+
+
+TOPIC: Geography
+
+Q: What is the capital of Japan?
+A: Tokyo
+D: Beijing
+D: Seoul
+D: Bangkok
+
+Q: Which river is the longest in the world?
+A: Nile
+D: Amazon
+D: Yangtze
+D: Mississippi
+
+Q: Mount Everest is in which mountain range?
+A: Himalayas
+D: Andes
+D: Rockies
+D: Alps
+
+
+TOPIC: Science
+
+Q: What is the chemical symbol for gold?
+A: Au
+D: Ag
+D: Gd
+D: Go
+
+Q: Which planet is known as the Red Planet?
+A: Mars
+D: Jupiter
+D: Venus
+D: Mercury
+
+!Q: What is the powerhouse of the cell?
+A: Mitochondria
+D: Nucleus
+D: Ribosome
+D: Cytoplasm
+
+
+TOPIC: History
+
+Q: In what year did World War II end?
+A: 1945
+D: 1944
+D: 1939
+D: 1918
+
+Q: Who painted the Mona Lisa?
+A: Leonardo da Vinci
+D: Michelangelo
+D: Raphael
+D: Vincent van Gogh

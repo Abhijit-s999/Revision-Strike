@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Revision Strike ⚔️ | Multiplayer MCQ Shooter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+</head>
+<body>
+
+  <!-- LOBBY -->
+  <div id="screen-lobby" class="screen active">
+    <div class="orb-bg"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+    <div class="lobby-wrap">
+      <div class="title-block">
+        <div class="title-flag">📚</div>
+        <h1 class="game-title">REVISION<br><span class="title-accent">STRIKE</span></h1>
+        <p class="game-sub">STUDY ANY SUBJECT · ADRENALINE LEARNING</p>
+      </div>
+      <div class="lobby-card glass">
+        <!-- Mode picker -->
+        <div class="mode-row">
+          <button class="btn-mode btn-coop" id="btn-coop">🌐 Online Multiplayer<br><span>Creates a code — share the URL with your friend</span></button>
+          <button class="btn-mode btn-solo" id="btn-solo">🎯 Solo Practice<br><span>Vs. stationary dummy</span></button>
+        </div>
+        <div class="net-status-row"><span class="net-status" id="net-status"></span></div>
+        <!-- Player inputs -->
+        <div class="player-inputs">
+          <div class="player-slot p1-slot">
+            <div class="player-label p1-label">⚡ YOUR NAME <span class="key-hint">(shown as P1 if you host)</span></div>
+            <input type="text" id="p1-name" class="name-input" placeholder="Your name..." maxlength="12" value="Player 1" />
+          </div>
+          <div class="vs-divider">VS</div>
+          <div class="player-slot p2-slot">
+            <div class="player-label p2-label">🔥 FRIEND'S NAME <span class="key-hint">(shown as P2 if you host)</span></div>
+            <input type="text" id="p2-name" class="name-input" placeholder="Friend's name..." maxlength="12" value="Player 2" />
+          </div>
+        </div>
+        <div class="topic-section">
+          <h3 class="section-label">📚 Choose Topic</h3>
+          <div class="topic-grid" id="topic-grid"></div>
+        </div>
+        <div class="questions-source">
+          <label class="qs-label" for="questions-file">
+            <span>📄 Load Questions File</span>
+            <span class="qs-hint">.txt in the format described in <code>questions.txt</code></span>
+          </label>
+          <input type="file" id="questions-file" accept=".txt,text/plain" />
+          <div class="qs-status" id="questions-status"></div>
+        </div>
+        <button class="btn-start-big" id="lobby-start-btn"><span class="btn-icon">⚔️</span> START BATTLE</button>
+        <div class="lobby-links">
+          <a href="hurdles.html" class="hurdle-link">🏃 Duo Hurdles (Racing Game) →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARACTER SELECT -->
+  <div id="screen-charselect" class="screen">
+    <h2 class="screen-heading">Choose Your Fighter</h2>
+    <div class="charselect-wrap single-mode" id="charselect-wrap">
+      <div class="char-panel me-panel">
+        <div class="panel-label" id="cs-me-role-label">⚡ YOU</div>
+        <div class="panel-sub" id="cs-me-name">Player</div>
+        <div class="char-grid" id="char-grid-me"></div>
+        <p class="cs-hint">A/D or ←/→ to move · SPACE or ENTER to confirm</p>
+        <div class="cs-confirmed hidden" id="cs-me-confirmed">✅ Ready!</div>
+        <div class="cs-opponent hidden" id="cs-them-confirmed">⏳ Waiting for opponent...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARENA -->
+  <div id="screen-arena" class="screen">
+    <div class="hud-bar">
+      <div class="hud-player hud-p1">
+        <span class="hud-name" id="hud-p1-name">P1</span>
+        <div class="hp-bar-wrap"><div class="hp-bar p1-hp" id="hp-bar-p1"></div></div>
+        <span class="hp-text" id="hp-text-p1">100 HP</span>
+        <div class="ammo-wrap" id="ammo-p1"><span class="ammo-bullet">●</span><span class="ammo-bullet">●</span><span class="ammo-bullet">●</span></div>
+      </div>
+      <div class="hud-center">
+        <span class="hud-topic" id="hud-topic">Vocabulario</span>
+        <div class="srs-indicator" id="srs-indicator"></div>
+        <span class="hud-score" id="hud-score">0 – 0</span>
+      </div>
+      <div class="hud-player hud-p2">
+        <div class="ammo-wrap" id="ammo-p2"><span class="ammo-bullet">●</span><span class="ammo-bullet">●</span><span class="ammo-bullet">●</span></div>
+        <span class="hp-text" id="hp-text-p2">100 HP</span>
+        <div class="hp-bar-wrap"><div class="hp-bar p2-hp" id="hp-bar-p2"></div></div>
+        <span class="hud-name" id="hud-p2-name">P2</span>
+      </div>
+    </div>
+    <canvas id="game-canvas"></canvas>
+    <div class="controls-bar">
+      <span>🎮 WASD move · SPACE shoot</span>
+    </div>
+  </div>
+
+  <!-- QUIZ OVERLAY -->
+  <div id="overlay-quiz" class="overlay hidden">
+    <div class="quiz-cinematic">
+      <div class="incoming-banner" id="incoming-banner">
+        <span class="incoming-text" id="incoming-text">💥 INCOMING!</span>
+        <span class="incoming-sub" id="incoming-sub">Answer to DEFLECT the shot!</span>
+      </div>
+      <div class="quiz-card glass" id="quiz-card">
+        <div class="quiz-header">
+          <span class="quiz-topic-tag" id="quiz-topic-tag">Comida</span>
+          <span class="quiz-difficulty" id="quiz-difficulty">⭐⭐</span>
+          <span class="quiz-player-tag" id="quiz-player-tag">P1 defending</span>
+        </div>
+        <div class="quiz-question-wrap">
+          <p class="quiz-lang-hint" id="quiz-lang-hint">🇬🇧 → 🇪🇸 What is this in Spanish?</p>
+          <p class="quiz-question" id="quiz-question">apple</p>
+          <p class="quiz-context" id="quiz-context"></p>
+        </div>
+        <div class="quiz-answers" id="quiz-answers"></div>
+        <div class="quiz-timer-wrap">
+          <div class="quiz-timer-bar" id="quiz-timer-bar"></div>
+          <span class="quiz-timer-text" id="quiz-timer-text">15s</span>
+        </div>
+      </div>
+      <div class="quiz-result hidden" id="quiz-result">
+        <div class="result-icon" id="result-icon">✅</div>
+        <div class="result-text" id="result-text">Correct!</div>
+        <div class="result-xp" id="result-xp">+10 XP</div>
+        <div class="correct-answer-reveal hidden" id="correct-answer-reveal"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RELOAD FLASH -->
+  <div id="overlay-reload" class="reload-flash hidden">
+    <span class="reload-word" id="reload-word">Recargar...</span>
+    <span class="reload-en" id="reload-en">(reloading)</span>
+  </div>
+
+  <!-- GAME OVER -->
+  <div id="screen-gameover" class="screen">
+    <div class="orb-bg"><div class="orb o1"></div><div class="orb o2"></div></div>
+    <div class="gameover-wrap">
+      <h1 class="gameover-title" id="gameover-title">🏆 VICTORY!</h1>
+      <div class="winner-announce" id="winner-announce"></div>
+      <div class="podium-wrap" id="podium"></div>
+      <div class="stats-breakdown"><h3>📊 Battle Stats</h3><div class="stats-grid" id="stats-grid"></div></div>
+      <div class="srs-summary glass" id="srs-summary"><h3>🧠 Memory Report</h3><div id="srs-summary-content"></div></div>
+      <div class="go-buttons">
+        <button class="btn-rematch" id="rematch-btn">🔄 Rematch</button>
+        <button class="btn-lobby" id="go-lobby-btn">🏠 Lobby</button>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <script src="questions.js"></script>
+  <script src="srs.js"></script>
+  <script src="audio.js"></script>
+  <script src="renderer.js"></script>
+  <script src="ui.js"></script>
+  <script src="net.js"></script>
+  <script src="loader.js"></script>
+  <script src="game.js"></script>
+  <script>
+    // Wire up the file input once the DOM is ready.
+    window.addEventListener('DOMContentLoaded', () => {
+      const fileEl = document.getElementById('questions-file');
+      const statusEl = document.getElementById('questions-status');
+      if (fileEl && typeof QuestionLoader !== 'undefined') {
+        QuestionLoader.bindFileInput(fileEl, statusEl);
+      }
+    });
+  </script>
+</body>
+</html>

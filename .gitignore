@@ -1,0 +1,20 @@
+# Editor / OS cruft
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+
+# Local Claude/agent config
+.claude/
+
+# Development helper (Python script that generated the original Spanish questions)
+generate_questions.py
+
+# Old planning docs (kept locally, not for the public repo)
+implementation_plan.md

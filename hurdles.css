@@ -1,0 +1,145 @@
+/* Duo Hurdles Stylesheet */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0a1a;--glass:rgba(255,255,255,0.08);--glass-border:rgba(255,255,255,0.12);--text:#e8e8f0;--text-dim:#888899;--p1:#2ed573;--p2:#ff6644;--accent:#6c5ce7;--accent2:#fd79a8;--danger:#ff4757;--success:#2ed573;--warning:#ffa502;--font:'Outfit',sans-serif;--font-pixel:'Press Start 2P',monospace;--radius:16px;--radius-sm:8px}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--font)}
+.h-screen{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center}
+.h-screen.active{display:flex}
+.glass{background:var(--glass);backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius)}
+.orb-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.5;animation:orbF 12s ease-in-out infinite alternate}
+.o1{width:400px;height:400px;background:var(--accent);top:-100px;left:-100px}
+.o2{width:350px;height:350px;background:var(--p2);bottom:-80px;right:-80px;animation-delay:-4s}
+@keyframes orbF{0%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-40px) scale(1.15)}100%{transform:translate(-20px,30px) scale(.95)}}
+.hidden{display:none !important}
+
+/* Lobby */
+.h-lobby-wrap{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:20px;max-width:550px;width:90%}
+.h-title-block{text-align:center}
+.h-title{font-family:var(--font-pixel);font-size:28px;line-height:1.3;background:linear-gradient(135deg,var(--p1),var(--accent),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h-accent{font-size:36px}
+.h-sub{font-size:10px;color:var(--text-dim);letter-spacing:3px;margin-top:6px;text-transform:uppercase}
+.h-card{width:100%;padding:24px;display:flex;flex-direction:column;gap:16px}
+.h-inputs{display:flex;gap:12px;align-items:center}
+.h-slot{flex:1}
+.h-label{font-size:11px;font-weight:700;letter-spacing:1px;display:block;margin-bottom:4px}
+.p1-c{color:var(--p1)}.p2-c{color:var(--p2)}
+.h-vs{font-family:var(--font-pixel);font-size:16px;color:var(--accent2);text-shadow:0 0 15px var(--accent2)}
+.h-input{width:100%;padding:10px 12px;background:rgba(0,0,0,.4);border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:14px;outline:none}
+.h-input:focus{border-color:var(--accent)}
+
+/* Difficulty */
+.h-diff h3{font-size:12px;color:var(--text-dim);margin-bottom:8px;letter-spacing:2px;text-transform:uppercase}
+.h-diff-row{display:flex;gap:8px;margin-bottom:6px}
+.h-tense-btn{flex:1;padding:10px 8px;border-radius:var(--radius-sm);font-size:11px;font-weight:600;border:1px solid var(--glass-border);background:rgba(0,0,0,.3);color:var(--text-dim);cursor:pointer;text-align:center;transition:all .2s;line-height:1.4}
+.h-tense-btn span{font-size:9px;color:var(--text-dim)}
+.h-tense-btn:hover{border-color:var(--accent)}
+.h-tense-btn.selected{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:transparent}
+
+.h-info{padding:12px;font-size:11px;color:var(--text-dim);line-height:1.6}
+.h-info p{margin:2px 0}
+.h-info strong{color:var(--text)}
+
+.h-start-btn{width:100%;padding:14px;font-family:var(--font-pixel);font-size:12px;color:#fff;border:none;border-radius:var(--radius);background:linear-gradient(135deg,var(--p1),var(--accent));cursor:pointer;letter-spacing:2px;box-shadow:0 6px 25px rgba(46,213,115,.3);transition:all .2s}
+.h-start-btn:hover{transform:translateY(-2px)}
+.back-link{font-size:12px;color:var(--accent2);text-decoration:none;text-align:center;display:block;margin-top:4px}
+
+/* Race HUD */
+.race-hud{width:100%;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.6);border-bottom:1px solid var(--glass-border);z-index:10}
+.race-hud-player{display:flex;align-items:center;gap:8px}
+.race-name{font-family:var(--font-pixel);font-size:10px;letter-spacing:1px}
+.race-hurdle{font-size:11px;color:var(--text-dim)}
+.race-center{text-align:center}
+.race-timer{font-family:var(--font-pixel);font-size:14px;color:var(--warning)}
+#hurdle-canvas{flex:1;width:100%;display:block}
+.race-controls{width:100%;padding:6px 20px;display:flex;justify-content:space-between;background:rgba(0,0,0,.6);border-top:1px solid var(--glass-border);font-size:10px;color:var(--text-dim)}
+#h-race{justify-content:flex-start}
+
+/* Quiz overlay */
+.h-overlay{position:absolute;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.85);animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.h-quiz-card{width:90%;max-width:480px;padding:24px;display:flex;flex-direction:column;gap:14px;animation:slideUp .4s ease}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.h-quiz-who{font-family:var(--font-pixel);font-size:12px;text-align:center;color:var(--warning)}
+.h-quiz-prompt{text-align:center}
+.h-tense-tag{display:inline-block;padding:4px 12px;border-radius:10px;font-size:10px;font-weight:700;background:rgba(108,92,231,.2);color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.h-verb{font-size:28px;font-weight:700;background:linear-gradient(to right,var(--p1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h-pronoun{font-size:18px;color:var(--text);margin-top:4px;font-weight:600}
+.h-quiz-answers{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.h-ans-btn{padding:12px;border-radius:var(--radius-sm);font-size:14px;font-weight:600;background:rgba(0,0,0,.4);border:1px solid var(--glass-border);color:var(--text);cursor:pointer;transition:all .15s;text-align:center}
+.h-ans-btn:hover{background:rgba(108,92,231,.2);border-color:var(--accent);transform:scale(1.03)}
+.h-ans-btn.correct{background:rgba(46,213,115,.3)!important;border-color:var(--success)!important}
+.h-ans-btn.wrong{background:rgba(255,71,87,.3)!important;border-color:var(--danger)!important}
+.h-ans-btn .h-key{font-family:var(--font-pixel);font-size:8px;color:var(--text-dim);display:block;margin-bottom:3px}
+.h-quiz-timer-wrap{width:100%;height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.h-quiz-timer{height:100%;background:linear-gradient(90deg,var(--success),var(--warning),var(--danger));border-radius:3px;width:100%;transition:width .1s linear}
+.h-quiz-result{text-align:center;font-size:14px;font-weight:700}
+.h-quiz-result span:first-child{font-size:32px}
+
+/* Finish */
+.h-finish-wrap{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:20px;max-width:500px;width:90%}
+.h-finish-title{font-family:var(--font-pixel);font-size:24px;text-align:center;background:linear-gradient(135deg,gold,var(--warning));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h-finish-stats{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.h-stat{padding:12px;border-radius:var(--radius-sm);background:rgba(255,255,255,.06);border:1px solid var(--glass-border);text-align:center}
+.h-stat-label{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px}
+.h-stat-val{font-size:20px;font-weight:700;margin-top:2px}
+.h-finish-btns{display:flex;gap:12px}
+.h-btn-rematch,.h-btn-lobby{padding:12px 24px;border-radius:var(--radius);font-family:var(--font-pixel);font-size:10px;cursor:pointer;border:none;letter-spacing:1px;transition:all .2s}
+.h-btn-rematch{background:linear-gradient(135deg,var(--p1),var(--accent));color:#fff}
+.h-btn-lobby{background:rgba(255,255,255,.06);color:var(--text);border:1px solid var(--glass-border)}
+#confetti-canvas-h{position:absolute;inset:0;pointer-events:none;z-index:200}
+
+/* Spectator mode — other runner is answering */
+.h-overlay.h-spectator-mode .h-quiz-card { border-color: var(--warning); box-shadow: 0 0 30px rgba(255,165,2,0.3); }
+.h-ans-btn.h-spectator-btn { opacity: 0.55; cursor: not-allowed !important; pointer-events: none; }
+.h-ans-btn.h-spectator-btn:hover { transform: none; background: rgba(0,0,0,0.4); border-color: var(--glass-border); }
+.h-ans-btn.spectate-picked {
+  opacity: 1 !important;
+  border-color: var(--accent2) !important;
+  background: rgba(253,121,168,0.25) !important;
+  box-shadow: 0 0 20px rgba(253,121,168,0.4);
+  transform: scale(1.02);
+}
+
+/* Topic picker grid for hurdles lobby */
+.h-topic-grid {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 8px;
+}
+.h-topic-btn {
+  flex: 0 0 auto; padding: 6px 12px;
+  background: var(--glass); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm); color: var(--text);
+  font-family: var(--font); font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+}
+.h-topic-btn:hover { background: rgba(108,92,231,0.2); border-color: var(--accent); }
+.h-topic-btn.selected {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-color: transparent; color: white;
+}
+
+/* Questions-file upload widget */
+.h-questions-source {
+  margin: 10px 0 6px 0;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px dashed var(--glass-border);
+  border-radius: var(--radius-sm);
+}
+.h-questions-source label {
+  display: flex; gap: 8px; flex-wrap: wrap; align-items: baseline;
+  color: var(--text); font-weight: 600;
+}
+.h-questions-source label span.qs-hint {
+  font-size: 11px; font-weight: 400; color: var(--text-dim);
+}
+.h-questions-source input[type=file] {
+  margin-top: 6px; width: 100%; color: var(--text-dim);
+  font-family: var(--font); font-size: 12px;
+}
+.h-questions-source input[type=file]::file-selector-button {
+  background: var(--accent); color: white; border: none; padding: 5px 10px;
+  border-radius: var(--radius-sm); cursor: pointer; font-weight: 600;
+  font-family: var(--font); margin-right: 8px;
+}
+.h-qs-status { margin-top: 6px; font-size: 11px; font-weight: 600; min-height: 1em; }
