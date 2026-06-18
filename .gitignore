@@ -10,6 +10,9 @@ Thumbs.db
 __pycache__/
 *.pyc
 
+# Downloaded by tunnel.bat on first run (~25 MB binary)
+cloudflared.exe
+
 # Local Claude/agent config
 .claude/
 

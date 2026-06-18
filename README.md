@@ -19,8 +19,10 @@ Everything runs in the browser. No accounts, no servers to deploy. Multiplayer u
 ### Playing with a friend
 
 Both players need to open the **same URL**:
-- If you're both on the same Wi-Fi: one of you runs `start.bat`, then the other opens `http://<your-ip>:8765/index.html` from their laptop.
-- If you're far apart: host the files anywhere (GitHub Pages works, so does an [ngrok](https://ngrok.com) tunnel) and share that URL. PeerJS handles the actual connection between browsers.
+
+- **Same Wi-Fi**: one of you runs `start.bat`, then the other opens `http://<your-ip>:8765/index.html` from their laptop.
+- **Across the internet (easiest)**: run `start.bat` in one window, then run **`tunnel.bat`** in a second window. It downloads Cloudflare's `cloudflared` on first use (~25 MB, one time), spins up a free `*.trycloudflare.com` URL, and prints it in the terminal. Share that URL with your friend — no account, no signup, no port forwarding.
+- **Forever-host**: drop the files on GitHub Pages, Netlify, or any static host. The PeerJS layer handles the actual P2P connection between browsers.
 
 First to open the page = **P1 (host)**. Second = **P2 (guest)**.
 
@@ -96,6 +98,7 @@ A full annotated example is in [`questions.txt`](questions.txt) — copy it, edi
 | `audio.js` | Web-Audio sound effects (no audio files needed) |
 | `style.css` | Shared styling |
 | `install.bat`, `start.bat` | Windows one-click launchers |
+| `tunnel.bat` | Spins up a free Cloudflare tunnel so a friend across the internet can join (no account needed) |
 
 No Node, no npm, no build step. Just files served over HTTP.
 
